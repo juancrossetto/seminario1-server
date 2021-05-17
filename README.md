@@ -1,6 +1,6 @@
-# My Budget App Server
+# Passenger App Server
 
-Repositorio de Servidor para My Budget App.
+Repositorio de Servidor para Passenger.
 El mismo fue desarrollado en NodeJS con MongoDB Atlas, hosteado en Heroku.
 Ademas contiene un proceso batch realizado con Cron que corre cada 6 hs por el tema de notificaciones.
 
@@ -28,9 +28,3 @@ npm run dev
 ```
 
 La aplicación se ejecutará en el puerto 4000 y estara conectada a una Base de Datos de MongoDB en la Nube.
-
-### Importar Tests
-
-1. [Descargar Postman](https://www.postman.com/)
-2. Abrir Postman
-3. Click en Importar, elegir archivo y especificar la ruta al archivo `TESTS.postman_collection.json`
