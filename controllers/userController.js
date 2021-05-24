@@ -2,15 +2,15 @@ const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const Income = require("../models/Income");
-const Expense = require("../models/Expense");
-const Loan = require("../models/Loan");
-const Budget = require("../models/Budget");
-const CreditCard = require("../models/CreditCard");
-const CreditCardMovement = require("../models/CreditCardMovement");
-const BankAccount = require("../models/BankAccount");
-const BankAccountMovement = require("../models/BankAccountMovement");
-const Investment = require("../models/Investment");
+// const Income = require("../models/Income");
+// const Expense = require("../models/Expense");
+// const Loan = require("../models/Loan");
+// const Budget = require("../models/Budget");
+// const CreditCard = require("../models/CreditCard");
+// const CreditCardMovement = require("../models/CreditCardMovement");
+// const BankAccount = require("../models/BankAccount");
+// const BankAccountMovement = require("../models/BankAccountMovement");
+// const Investment = require("../models/Investment");
 
 exports.createUser = async (req, res) => {
   // revisar si hay errores
@@ -67,7 +67,7 @@ exports.getUserByEmail = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     // Extraer el usuario y comprobar si existe
-    const { name, email } = req.body;
+    const { name, email, surname, prefix, phoneNumber, image } = req.body;
 
     // Si el Usuario existe o no
     let user = await User.findById(req.params.id);
@@ -78,8 +78,12 @@ exports.updateUser = async (req, res) => {
 
     // Crear un objeto con la nueva información
     const newUser = {};
-    newUser.name = name;
-    newUser.email = email;
+    newUser.name = name ? name : newUser.name;
+    newUser.email = email ? email : email.name;
+    newUser.surname = surname ? surname : newUser.surname;
+    newUser.prefix = prefix ? prefix : newUser.prefix;
+    newUser.phoneNumber = phoneNumber ? phoneNumber : newUser.phoneNumber;
+    newUser.image = image ? image : newUser.image;
     // Guardar el usuario (en caso de no existir lo crea)
     user = await User.findOneAndUpdate({ _id: req.params.id }, newUser, {
       new: true,
