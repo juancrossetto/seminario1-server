@@ -31,9 +31,9 @@ router.post(
 // api/users/:email
 router.get("/:email", userController.getUserByEmail);
 
-router.put("/:id", auth, userController.updateUser);
+router.put("/:id", userController.updateUser);
 
-router.delete("/:id", auth, userController.deleteUser);
+router.delete("/:id", userController.deleteUser);
 
 // router.get("/getAllData/:email", userController.getAllData);
 
