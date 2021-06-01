@@ -35,6 +35,8 @@ app.use("/api/bankaccounts", require("./routes/bankAccounts"));
 app.use("/api/creditCards", require("./routes/creditCards"));
 app.use("/api/weeklymaturities", require("./routes/maturities"));
 app.use("/api/cabify", require("./routes/cabify"))
+app.use("/api/uber", require("./routes/uber"))
+
 app.use("/api/pushNotifications", require("./routes/pushNotification"));
 
 // arrancar la app
