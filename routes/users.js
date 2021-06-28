@@ -35,6 +35,13 @@ router.put("/:id", userController.updateUser);
 
 router.delete("/:id", userController.deleteUser);
 
+router.get("/travel/:email", userController.getAllTravels);
+
+router.get("/places/:email", userController.getPlaces);
+
+router.post("/places/:email", userController.updatePlaces);
+
+router.post("/travels/:email", userController.updateTravels);
 // router.get("/getAllData/:email", userController.getAllData);
 
 module.exports = router;

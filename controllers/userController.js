@@ -40,7 +40,8 @@ exports.createUser = async (req, res) => {
     await user.save();
     res.json({ user });
   } catch (error) {
-    res.status(400).send("Hubo un error");
+    console.log(JSON.stringify(error))
+    res.status(400).send("Hubo un error: ");
   }
 };
 
@@ -111,6 +112,59 @@ exports.deleteUser = async (req, res) => {
     res.status(500).send("Hubo un error");
   }
 };
+
+exports.getAllTravels = async (req, res) => {
+  let user = await User.findOne({ email: req.params.email });
+  if (!user) {
+    return res.status(404).json({ msg: "No existe el usuario" });
+  }
+
+  return res.status(200).json(user.travels);
+}
+
+exports.getPlaces = async (req, res) => {
+  let user = await User.findOne({ email: req.params.email });
+  if (!user) {
+    return res.status(404).json({ msg: "No existe el usuario" });
+  }
+
+  return res.status(200).json(user.places);
+}
+
+exports.updateTravels = async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.params.email });
+    if (!user) {
+      return res.status(404).json({ msg: "No existe el usuario" });
+    }
+
+    user.travels.push(req.body);
+    console.log(user)
+    user = await User.findOneAndUpdate({ _id: user._id }, user);
+    console.log(user)
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+}
+
+
+exports.updatePlaces = async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.params.email });
+    if (!user) {
+      return res.status(404).json({ msg: "No existe el usuario" });
+    }
+    user.places.push(req.body);
+    user = await User.findOneAndUpdate({ _id: user._id }, user);
+    console.log(user)
+    return res.status(200).json({user});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+}
 
 // exports.getAllData = async (req, res) => {
 //   try {
