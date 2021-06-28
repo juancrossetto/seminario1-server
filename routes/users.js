@@ -12,12 +12,6 @@ router.post(
     check("email", "Agrega un email válido").isEmail(),
     check("email", "El mail es obligatorio").not().isEmpty(),
     check("phoneNumber", "Agrega un número de telefono válido").isNumeric(),
-    check("phoneNumber", "El número de telefono es obligatorio")
-      .not()
-      .isEmpty(),
-    check("prefix", "El prefijo del número de telefono es obligatorio")
-      .not()
-      .isEmpty(),
     check("password", "El password debe ser minimo de 6 caracteres").isLength({
       min: 6,
     }),

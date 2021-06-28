@@ -83,7 +83,6 @@ const UserSchema = mongoose.Schema({
   },
   phoneNumber: {
     type: Number,
-    required: true,
     trim: true,
   },
   email: {
@@ -99,6 +98,10 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
+    trim: true,
+  },
+  fromGoogle: {
+    type: Boolean,
     trim: true,
   },
   travels:{

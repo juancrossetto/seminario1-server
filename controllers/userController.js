@@ -68,7 +68,7 @@ exports.getUserByEmail = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     // Extraer el usuario y comprobar si existe
-    const { name, email, surname, prefix, phoneNumber, image } = req.body;
+    const { name, email, surname, prefix, phoneNumber, image, fromGoogle } = req.body;
 
     // Si el Usuario existe o no
     let user = await User.findById(req.params.id);
@@ -85,6 +85,7 @@ exports.updateUser = async (req, res) => {
     newUser.prefix = prefix ? prefix : newUser.prefix;
     newUser.phoneNumber = phoneNumber ? phoneNumber : newUser.phoneNumber;
     newUser.image = image ? image : newUser.image;
+    newUser.fromGoogle = fromGoogle ? fromGoogle : newUser.fromGoogle 
     // Guardar el usuario (en caso de no existir lo crea)
     user = await User.findOneAndUpdate({ _id: req.params.id }, newUser, {
       new: true,
