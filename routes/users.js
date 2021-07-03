@@ -33,6 +33,8 @@ router.get("/travel/:email", userController.getAllTravels);
 
 router.get("/places/:email", userController.getPlaces);
 
+router.delete("/places/:email", userController.deletePlace);
+
 router.post("/places/:email", userController.updatePlaces);
 
 router.post("/travels/:email", userController.updateTravels);

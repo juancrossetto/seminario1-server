@@ -54,10 +54,28 @@ exports.getUserByEmail = async (req, res) => {
       if (user) {
         res.json({ user });
       } else {
+
         res.status(500).send("No se encontro un usuario con ese email");
       }
     } else {
       res.status(500).send("Para obtener un usuario debe indicar un email");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error al obtener los usuarios");
+  }
+};
+
+exports.loginFromGoogle = async (req, res) => {
+  try {
+    let googleUser = req.body;
+    const user = await User.findOne(googleUser.email);
+    if (user) {
+      user.fromGoogle = true;
+      user = await User.findOneAndUpdate({ _id: user._id }, user);
+      res.json({ user });
+    } else {
+      res.status(500).send("No se encontro un usuario con ese email");
     }
   } catch (error) {
     console.log(error);
@@ -85,7 +103,7 @@ exports.updateUser = async (req, res) => {
     newUser.prefix = prefix ? prefix : newUser.prefix;
     newUser.phoneNumber = phoneNumber ? phoneNumber : newUser.phoneNumber;
     newUser.image = image ? image : newUser.image;
-    newUser.fromGoogle = fromGoogle ? fromGoogle : newUser.fromGoogle 
+    newUser.fromGoogle = fromGoogle ? fromGoogle : newUser.fromGoogle
     // Guardar el usuario (en caso de no existir lo crea)
     user = await User.findOneAndUpdate({ _id: req.params.id }, newUser, {
       new: true,
@@ -140,7 +158,6 @@ exports.updateTravels = async (req, res) => {
     }
 
     user.travels.push(req.body);
-    console.log(user)
     user = await User.findOneAndUpdate({ _id: user._id }, user);
     console.log(user)
     return res.status(200).json({ user });
@@ -160,7 +177,24 @@ exports.updatePlaces = async (req, res) => {
     user.places.push(req.body);
     user = await User.findOneAndUpdate({ _id: user._id }, user);
     console.log(user)
-    return res.status(200).json({user});
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+}
+
+exports.deletePlace = async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.params.email });
+    if (!user) {
+      return res.status(404).json({ msg: "No existe el usuario" });
+    }
+    let placesToUpdate = user.places.filter(place => place._id != req.body._id);
+    user.places = placesToUpdate;
+    user = await User.findOneAndUpdate({ _id: user._id }, user);
+    console.log(user)
+    return res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
