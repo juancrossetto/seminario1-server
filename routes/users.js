@@ -25,6 +25,8 @@ router.post(
 // api/users/:email
 router.get("/:email", userController.getUserByEmail);
 
+router.post("/google/:email", userController.loginFromGoogle);
+
 router.put("/:id", userController.updateUser);
 
 router.delete("/:id", userController.deleteUser);
@@ -35,7 +37,9 @@ router.get("/places/:email", userController.getPlaces);
 
 router.delete("/places/:email", userController.deletePlace);
 
-router.post("/places/:email", userController.updatePlaces);
+router.post("/places/:email", userController.insertPlace);
+
+router.put("/places/:email", userController.updatePlaces);
 
 router.post("/travels/:email", userController.updateTravels);
 // router.get("/getAllData/:email", userController.getAllData);

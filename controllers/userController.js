@@ -68,8 +68,7 @@ exports.getUserByEmail = async (req, res) => {
 
 exports.loginFromGoogle = async (req, res) => {
   try {
-    let googleUser = req.body;
-    const user = await User.findOne(googleUser.email);
+    let user = await User.findOne({ email: req.params.email });
     if (user) {
       user.fromGoogle = true;
       user = await User.findOneAndUpdate({ _id: user._id }, user);
@@ -186,10 +185,12 @@ exports.updatePlaces = async (req, res) => {
   }
 }
 
+
 exports.insertPlace = async (req, res) => {
+  console.log(req.params.email)
   try {
     let user = await User.findOne({ email: req.params.email });
-    if (user) {
+    if (!user) {
       return res.status(404).json({ msg: "No existe el usuario" });
     }
     user.places.push(req.body);
