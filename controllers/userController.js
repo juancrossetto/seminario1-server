@@ -167,11 +167,29 @@ exports.updateTravels = async (req, res) => {
   }
 }
 
-
 exports.updatePlaces = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.params.email });
     if (!user) {
+      return res.status(404).json({ msg: "No existe el usuario" });
+    }
+    let placesToUpdate = user.places.filter(place => place._id != req.body._id);
+    placesToUpdate.push(req.body);
+    user.places = placesToUpdate;
+
+    user = await User.findOneAndUpdate({ _id: user._id }, user);
+    console.log(user)
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+}
+
+exports.insertPlace = async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.params.email });
+    if (user) {
       return res.status(404).json({ msg: "No existe el usuario" });
     }
     user.places.push(req.body);
