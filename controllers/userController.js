@@ -40,7 +40,7 @@ exports.createUser = async (req, res) => {
     await user.save();
     res.json({ user });
   } catch (error) {
-    console.log(JSON.stringify(error))
+    console.log(JSON.stringify(error));
     res.status(400).send("Hubo un error: ");
   }
 };
@@ -54,7 +54,6 @@ exports.getUserByEmail = async (req, res) => {
       if (user) {
         res.json({ user });
       } else {
-
         res.status(500).send("No se encontro un usuario con ese email");
       }
     } else {
@@ -85,7 +84,8 @@ exports.loginFromGoogle = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     // Extraer el usuario y comprobar si existe
-    const { name, email, surname, prefix, phoneNumber, image, fromGoogle } = req.body;
+    const { name, email, surname, prefix, phoneNumber, image, fromGoogle } =
+      req.body;
 
     // Si el Usuario existe o no
     let user = await User.findById(req.params.id);
@@ -102,7 +102,7 @@ exports.updateUser = async (req, res) => {
     newUser.prefix = prefix ? prefix : newUser.prefix;
     newUser.phoneNumber = phoneNumber ? phoneNumber : newUser.phoneNumber;
     newUser.image = image ? image : newUser.image;
-    newUser.fromGoogle = fromGoogle ? fromGoogle : newUser.fromGoogle
+    newUser.fromGoogle = fromGoogle ? fromGoogle : newUser.fromGoogle;
     // Guardar el usuario (en caso de no existir lo crea)
     user = await User.findOneAndUpdate({ _id: req.params.id }, newUser, {
       new: true,
@@ -138,7 +138,7 @@ exports.getAllTravels = async (req, res) => {
   }
 
   return res.status(200).json(user.travels);
-}
+};
 
 exports.getPlaces = async (req, res) => {
   let user = await User.findOne({ email: req.params.email });
@@ -147,7 +147,7 @@ exports.getPlaces = async (req, res) => {
   }
 
   return res.status(200).json(user.places);
-}
+};
 
 exports.updateTravels = async (req, res) => {
   try {
@@ -158,13 +158,13 @@ exports.updateTravels = async (req, res) => {
 
     user.travels.push(req.body);
     user = await User.findOneAndUpdate({ _id: user._id }, user);
-    console.log(user)
+    console.log(user);
     return res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
   }
-}
+};
 
 exports.updatePlaces = async (req, res) => {
   try {
@@ -172,22 +172,24 @@ exports.updatePlaces = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "No existe el usuario" });
     }
-    let placesToUpdate = user.places.filter(place => place._id != req.body._id);
+    console.log("req.body update", req.body);
+    let placesToUpdate = user.places.filter(
+      (place) => place._id != req.body.id
+    );
     placesToUpdate.push(req.body);
     user.places = placesToUpdate;
 
     user = await User.findOneAndUpdate({ _id: user._id }, user);
-    console.log(user)
+    console.log(user);
     return res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
   }
-}
-
+};
 
 exports.insertPlace = async (req, res) => {
-  console.log(req.params.email)
+  console.log(req.params.email);
   try {
     let user = await User.findOne({ email: req.params.email });
     if (!user) {
@@ -195,13 +197,13 @@ exports.insertPlace = async (req, res) => {
     }
     user.places.push(req.body);
     user = await User.findOneAndUpdate({ _id: user._id }, user);
-    console.log(user)
+    console.log(user);
     return res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
   }
-}
+};
 
 exports.deletePlace = async (req, res) => {
   try {
@@ -209,43 +211,16 @@ exports.deletePlace = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "No existe el usuario" });
     }
-    let placesToUpdate = user.places.filter(place => place._id != req.body._id);
+    console.log("body delete", req.body);
+    let placesToUpdate = user.places.filter(
+      (place) => place._id.toString() !== req.body._id.toString()
+    );
     user.places = placesToUpdate;
     user = await User.findOneAndUpdate({ _id: user._id }, user);
-    console.log(user)
+    console.log(user);
     return res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
   }
-}
-
-// exports.getAllData = async (req, res) => {
-//   try {
-//     const { email } = req.params;
-//     if (email) {
-//       var incomes = await Income.find({ email });
-//       var expenses = await Expense.find({ email });
-//       var loans = await Loan.find({ email });
-//       var creditCards = await CreditCard.find({ email });
-//       var bankAccounts = await BankAccount.find({ email });
-//       var budgets = await Budget.find({ email });
-//       var creditCardMovements = await CreditCardMovement.find({ email });
-//       var bankAccountMovements = await BankAccountMovement.find({ email });
-//       var investments = await Investment.find({ email });
-//       res.json({
-//         incomes,
-//         expenses,
-//         loans,
-//         creditCards,
-//         bankAccounts,
-//         budgets,
-//         investments,
-//         creditCardMovements,
-//         bankAccountMovements,
-//       });
-//     } else {
-//       res.status(500).send("Para obtener la información debe indicar un email");
-//     }
-//   } catch (error) {}
-// };
+};
