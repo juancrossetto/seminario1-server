@@ -73,7 +73,10 @@ exports.loginFromGoogle = async (req, res) => {
       user = await User.findOneAndUpdate({ _id: user._id }, user);
       res.json({ user });
     } else {
-      user = new User(req.body);
+      let newUser = req.body;
+      const salt = await bcryptjs.genSalt(10);
+      newUser.password = await bcryptjs.hash(newUser.password, salt);
+      user = new User(newUser);
       await user.save();
       res.json({ user });
     }
@@ -210,12 +213,12 @@ exports.insertPlace = async (req, res) => {
 exports.deletePlace = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.params.email });
-    if (!user) {
+    if (!user || !req.body) {
       return res.status(404).json({ msg: "No existe el usuario" });
     }
-    console.log("body delete", req.body);
+    console.log("body delete", req.body.place);
     let placesToUpdate = user.places.filter(
-      (place) => place._id.toString() !== req.body._id.toString()
+      (place) => place._id.toString() !== req.body.place._id.toString()
     );
     user.places = placesToUpdate;
     user = await User.findOneAndUpdate({ _id: user._id }, user);
