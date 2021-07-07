@@ -74,7 +74,6 @@ exports.loginFromGoogle = async (req, res) => {
       res.json({ user });
     } else {
       user = new User(req.body);
-      user.password = 123456
       await user.save();
       res.json({ user });
     }
