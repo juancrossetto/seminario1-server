@@ -73,7 +73,10 @@ exports.loginFromGoogle = async (req, res) => {
       user = await User.findOneAndUpdate({ _id: user._id }, user);
       res.json({ user });
     } else {
-      res.status(500).send("No se encontro un usuario con ese email");
+      user = new User(req.body);
+      user.password = 123456
+      await user.save();
+      res.json({ user });
     }
   } catch (error) {
     console.log(error);
